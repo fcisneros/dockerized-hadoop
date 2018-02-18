@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+
+  master:
+    image: dockerized/master
+    hostname: master
+    container_name: master
+    environment:
+      - CLUSTER_NAME=master-single
+      - HISTORYSERVER_HOSTNAME=master
+      - RESOURCEMANAGER_HOSTNAME=master
+    volumes:
+      - ./data/namenode:/hadoop/dfs/name
+      - ./data/historyserver:/hadoop/yarn/timeline
+    ports:
+      - "50070:50070"
+      - "8088:8088"
+      - "8188:8188"
+
+  slave1:
+    image: dockerized/slave
+    hostname: slave1
+    container_name: slave1
+    environment:
+      - HISTORYSERVER_HOSTNAME=master
+      - RESOURCEMANAGER_HOSTNAME=master
+    volumes:
+      - ./data/datanode1:/hadoop/dfs/data
+    depends_on:
+      - "master"
+
+  slave2:
+    image: dockerized/slave
+    hostname: slave2
+    container_name: slave2
+    environment:
+      - HISTORYSERVER_HOSTNAME=master
+      - RESOURCEMANAGER_HOSTNAME=master
+    volumes:
+      - ./data/datanode2:/hadoop/dfs/data
+    depends_on:
+      - "master"
