@@ -13,6 +13,9 @@ stop:
 down destroy:
 	@docker-compose down
 
+status ps:
+	@docker-compose -f docker-compose.yml -f docker-compose-jobs.yml ps
+
 logs:
 	@docker-compose logs -f
 

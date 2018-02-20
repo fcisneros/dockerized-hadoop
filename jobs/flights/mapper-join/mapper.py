@@ -3,7 +3,7 @@
 """ Reads the flights and airlines datasets and generates a join in the mapper side"""
 
 import sys
-from collections import Counter
+import os
 
 # flights.csv fields
 # YEAR
@@ -45,23 +45,33 @@ from collections import Counter
 
 
 separator = ','
-airlines = {}
+airlines_filename = 'airlines.csv'
+airlines = None
 flights = []
 
+if os.path.exists(airlines_filename):
+    print("file exists")
+else:
+    raise Exception("file does not exist")
+
+# read airlines file locally
+airlines = {}
+list_file = open(airlines_filename)
+list_dm = set(l.strip() for l in list_file)
+list_file.close()
+for a in list_dm:
+    a_splits = a.split(separator)
+    airline_id = a_splits[0]
+    airline_name = a_splits[1]
+    airlines[airline_id] = airline_name
+
+# read flights from STDIN
 for line in sys.stdin:
-    splits = line.strip().split(separator)
-    if len(splits) == 2:  # airlines dataset
-        airline_id = splits[0]
-        airline_name = splits[1]
-        airlines[airline_id] = airline_name
-    else:
-        airline_id = splits[4]
-        flight_number = splits[5]
-        flights.append((airline_id, flight_number))
 
+    a_splits = line.strip().split(separator)
+    flight_airline_id = a_splits[4]
+    flight_number = a_splits[5]
 
-# Let's join both lists ane emit tuples
-for f in flights:
-    airline_name = airlines.get(f[0])
-    if airline_name:
-        print("{}\t{}\t{}".format(f[0], airline_name, f[1]))
+    # join flight with airlines
+    flight_airline_name = airlines.get(flight_airline_id)
+    print("{}\t{}\t{}".format(flight_airline_id, flight_airline_name, flight_number))

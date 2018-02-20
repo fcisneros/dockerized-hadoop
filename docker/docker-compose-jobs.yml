@@ -18,12 +18,12 @@ services:
     image: dockerized/slave
     container_name: flighs-mapper-join
     hostname: flighs-mapper-join
+    working_dir: /jobs
     environment:
-      - INPUT_1=/datasets/flights/flights.csv
-      - INPUT_2=/datasets/flights/airlines.csv
+      - INPUT=/datasets/flights/flights.csv
       - OUTPUT=/datasets/flights-mapper-join/
     volumes:
-      - ../jobs/flights/mapper-join/:/jobs
+      - ../jobs/flights/mapper-join:/jobs
     command: /jobs/run-in-hadoop.sh
 
 
