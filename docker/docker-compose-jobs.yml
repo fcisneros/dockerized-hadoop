@@ -7,12 +7,23 @@ services:
     container_name: ecobici-counts
     hostname: ecobici-counts
     environment:
-      - HISTORYSERVER_HOSTNAME=master
-      - RESOURCEMANAGER_HOSTNAME=master
       - INPUT=/datasets/ecobici/*
       - OUTPUT=/datasets/ecobici-count-per-station/
     volumes:
       - ../jobs/ecobici/count-per-station:/jobs
+    command: /jobs/run-in-hadoop.sh
+
+
+  flights-mapper-join:
+    image: dockerized/slave
+    container_name: flighs-mapper-join
+    hostname: flighs-mapper-join
+    environment:
+      - INPUT_1=/datasets/flights/flights.csv
+      - INPUT_2=/datasets/flights/airlines.csv
+      - OUTPUT=/datasets/flights-mapper-join/
+    volumes:
+      - ../jobs/flights/mapper-join/:/jobs
     command: /jobs/run-in-hadoop.sh
 
 

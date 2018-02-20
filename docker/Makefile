@@ -20,5 +20,11 @@ logs:
 run-ecobici-counts: start
 	@docker-compose -f docker-compose.yml -f docker-compose-jobs.yml run ecobici-counts
 
+run-flights-mapper-join: start
+	@docker-compose -f docker-compose.yml -f docker-compose-jobs.yml run flights-mapper-join
+
+run-flights-reducer-join: start
+	@docker-compose -f docker-compose.yml -f docker-compose-jobs.yml run flights-reducer-join
+
 run-datasets: start  # interactive client with acces to HDFS
 	@docker-compose -f docker-compose.yml -f docker-compose-jobs.yml run datasets
