@@ -27,6 +27,20 @@ services:
     command: /jobs/run-in-hadoop.sh
 
 
+  flights-reducer-join:
+    image: dockerized/slave
+    container_name: flighs-reducer-join
+    hostname: flighs-reducer-join
+    working_dir: /jobs
+    environment:
+      - INPUT_1=/datasets/flights/airlines.csv
+      - INPUT_2=/datasets/flights/flights.csv
+      - OUTPUT=/datasets/flights-reducer-join/
+    volumes:
+      - ../jobs/flights/reducer-join:/jobs
+    command: /jobs/run-in-hadoop.sh
+
+
   datasets:
     image: dockerized/slave
     container_name: datasets
