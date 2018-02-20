@@ -15,3 +15,10 @@ down destroy:
 
 logs:
 	@docker-compose logs -f
+
+
+run-ecobici-counts: start
+	@docker-compose -f docker-compose.yml -f docker-compose-jobs.yml run ecobici-counts
+
+run-datasets: start  # interactive client with acces to HDFS
+	@docker-compose -f docker-compose.yml -f docker-compose-jobs.yml run datasets

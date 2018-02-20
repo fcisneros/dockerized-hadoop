@@ -14,10 +14,10 @@ function addProperty() {
 export FS_DEFAULTFS=${FS_DEFAULTFS:-master}
 
 # yarn.timeline-service.hostname
-export HISTORYSERVER_HOSTNAME=${HISTORYSERVER_HOSTNAME:-historyserver}
+export HISTORYSERVER_HOSTNAME="${HISTORYSERVER_HOSTNAME:-master}"
 
 # yarn.resourcemanager.hostname
-export RESOURCEMANAGER_HOSTNAME=${RESOURCEMANAGER_HOSTNAME:-resourcemanager}
+export RESOURCEMANAGER_HOSTNAME="${RESOURCEMANAGER_HOSTNAME:-master}"
 
 
 # CORE
@@ -55,13 +55,13 @@ addProperty /etc/hadoop/yarn-site.xml yarn.resourcemanager.address ${RESOURCEMAN
 addProperty /etc/hadoop/yarn-site.xml yarn.resourcemanager.scheduler.address ${RESOURCEMANAGER_HOSTNAME}:8030
 addProperty /etc/hadoop/yarn-site.xml yarn.resourcemanager.resource-tracker.address ${RESOURCEMANAGER_HOSTNAME}:8031
 addProperty /etc/hadoop/yarn-site.xml yarn.nodemanager.remote-app-log-dir /app-logs
+addProperty /etc/hadoop/yarn-site.xml yarn.nodemanager.aux-services mapreduce_shuffle
 
 
 # MAPRED
 addProperty /etc/hadoop/mapred-site.xml yarn.nodemanager.bind-host 0.0.0.0
+addProperty /etc/hadoop/mapred-site.xml mapreduce.framework.name yarn
+addProperty /etc/hadoop/mapred-site.xml mapreduce.jobhistory.address ${HISTORYSERVER_HOSTNAME}:10020
 
-
-cat /etc/hadoop/core-site.xml
 
 exec $@
-

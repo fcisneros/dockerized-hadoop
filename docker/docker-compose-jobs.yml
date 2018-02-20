@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+
+  ecobici-counts:
+    image: dockerized/slave
+    container_name: ecobici-counts
+    hostname: ecobici-counts
+    environment:
+      - HISTORYSERVER_HOSTNAME=master
+      - RESOURCEMANAGER_HOSTNAME=master
+      - INPUT=/datasets/ecobici/*
+      - OUTPUT=/datasets/ecobici-count-per-station/
+    volumes:
+      - ../jobs/ecobici/count-per-station:/jobs
+    command: /jobs/run-in-hadoop.sh
+
+
+  datasets:
+    image: dockerized/slave
+    container_name: datasets
+    hostname: datasets
+    working_dir: /datasets
+    volumes:
+      - ../datasets:/datasets
+    command: /bin/bash
+    tty: true
